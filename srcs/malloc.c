@@ -6,10 +6,14 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:19:59 by tomoron           #+#    #+#             */
-/*   Updated: 2024/11/26 16:42:53 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/11/26 20:17:08 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "includes/malloc.h"
+
 void *malloc(size_t size)
 {
+	(void)size;
+	return(0);
 }

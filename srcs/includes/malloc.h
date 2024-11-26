@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:38:01 by tomoron           #+#    #+#             */
-/*   Updated: 2024/11/26 16:41:22 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/11/26 20:17:37 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #  define DEBUG 1
 # endif
 
-void *malloc(size_t size)
+#include <stddef.h>
+void *malloc(size_t size);
 
 #endif
