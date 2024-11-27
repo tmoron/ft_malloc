@@ -6,7 +6,7 @@
 #    By: tomoron <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 00:35:01 by tomoron           #+#    #+#              #
-#    Updated: 2024/11/26 16:37:09 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/27 17:41:36 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,13 +28,20 @@ OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS_NAMES:.c=.o))
 
 FLAGS = -Wall -Wextra -Werror
 
+LFT = libft/libft.a
+
+LFT_DIR = libft/
+
 all: libft_malloc.so
 
 libft_malloc.so: $(NAME)
 	ln -sf $(NAME) libft_malloc.so
 
-$(NAME): $(OBJS_DIR) $(OBJS)
-	$(CC) -shared -o $(NAME) $(OBJS)
+$(LFT):
+	$(MAKE) -C $(LFT_DIR)
+
+$(NAME): $(OBJS_DIR) $(OBJS) $(LFT)
+	$(CC) -shared -o $(NAME) $(OBJS) $(LFT)
 
 $(OBJS_DIR):
 	mkdir -p $(OBJS_DIR)
@@ -44,6 +51,7 @@ $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 
 clean:
 	rm -rf $(OBJS_DIR) 
+	make -C $(LFT_DIR) fclean
 
 fclean: clean
 	rm -f $(NAME)
