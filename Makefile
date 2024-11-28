@@ -6,7 +6,7 @@
 #    By: tomoron <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 00:35:01 by tomoron           #+#    #+#              #
-#    Updated: 2024/11/27 17:41:36 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/27 18:09:19 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,9 @@ LFT = libft/libft.a
 LFT_DIR = libft/
 
 all: libft_malloc.so
+
+exec: $(OBJS_DIR) $(OBJS) $(LFT)
+	$(CC) -o a.out $(OBJS) $(LFT)
 
 libft_malloc.so: $(NAME)
 	ln -sf $(NAME) libft_malloc.so
