@@ -6,7 +6,7 @@
 #    By: tomoron <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 00:35:01 by tomoron           #+#    #+#              #
-#    Updated: 2024/11/27 18:09:19 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/29 17:03:52 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRCS = $(addprefix $(SRCS_DIR)/, $(SRCS_NAMES))
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS_NAMES:.c=.o))
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -g
 
 LFT = libft/libft.a
 
