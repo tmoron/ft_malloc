@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:38:01 by tomoron           #+#    #+#             */
-/*   Updated: 2024/11/29 19:10:52 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/11/30 13:53:11 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@
 # include <stddef.h>
 # include <sys/mman.h>
 # include <unistd.h>
+# include "libft.h"
 
-# define TINY_BLOC_SIZE 16384
+# define PAGE_SIZE sysconf(_SC_PAGESIZE)
+
+# define TINY_BLOC_SIZE (PAGE_SIZE * 4)
 # define SMALL_BLOC_SIZE 524288
 
 # define TINY_MALLOC 1024
@@ -42,10 +45,9 @@ typedef struct s_allocations
 	t_mem_bloc	*large;
 }	t_allocations;
 
-t_allocations			g_allocs;
-
 extern t_allocations	g_allocs;
 
 void	*ft_malloc(size_t size);
+void	show_alloc_mem();
 
 #endif

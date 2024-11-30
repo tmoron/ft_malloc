@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:19:59 by tomoron           #+#    #+#             */
-/*   Updated: 2024/11/29 19:00:29 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/11/30 18:01:25 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
+
+t_allocations	g_allocs;
 
 void	*get_memory(size_t size)
 {
@@ -28,18 +30,6 @@ void	*get_memory(size_t size)
 	bloc_info->space_left = size - sizeof(t_mem_bloc);
 	bloc_info->next = 0;
 	return (ptr);
-}
-
-void	*allocate_memory(size_t size, t_mem_bloc **bloc)
-{
-	t_mem_bloc	*new;
-
-	new = get_memory(size + sizeof(t_mem_bloc));
-	if (!new)
-		return (0);
-	new->next = *bloc;
-	*bloc = new;
-	return ((char *)new + sizeof(t_mem_bloc));
 }
 
 t_alloc	*reserve_addr(t_alloc *addr, size_t size, t_alloc *prev,
@@ -72,12 +62,13 @@ t_alloc	*get_suitable_addr_in_bloc(t_mem_bloc *bloc, size_t size)
 	space_left = bloc->space_left;
 	while (tmp->next)
 	{
-		free_space = (tmp->next - tmp) - (tmp->size + sizeof(t_alloc));
+		free_space = ((unsigned long)tmp->next - (unsigned long)tmp) - (tmp->size + sizeof(t_alloc));
 		if (free_space >= size + sizeof(t_alloc))
 			return (reserve_addr(
 					(void *)((char *)tmp->next + tmp->size + sizeof(t_alloc)),
 				size, tmp, bloc));
 		space_left -= free_space;
+		tmp = tmp->next;
 	}
 	if (space_left >= size + sizeof(t_alloc))
 		return (reserve_addr(
@@ -133,21 +124,17 @@ void	*pre_allocated(size_t size, t_mem_bloc **bloc, int is_small)
 
 void	*ft_malloc(size_t size)
 {
+	t_mem_bloc	*new;
+
 	if (size <= TINY_MALLOC)
 		return (pre_allocated(size, &(g_allocs.tiny), 0));
 	else if (size <= SMALL_MALLOC)
 		return (pre_allocated(size, &(g_allocs.small), 1));
-	else
-		return (allocate_memory(size, &(g_allocs.large)));
-}
 
-int	main(void)
-{
-	void	*ptr;
-	void	*ptr2;
-
-	ptr = ft_malloc(10);
-	ptr2 = ft_malloc(2000);
-	printf("%p\n", ptr);
-	printf("%p\n", ptr2);
+	new = get_memory(size + sizeof(t_mem_bloc));
+	if (!new)
+		return (0);
+	new->next = g_allocs.large;
+	g_allocs.large = new;
+	return ((char *)new + sizeof(t_mem_bloc));
 }

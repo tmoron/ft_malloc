@@ -6,13 +6,13 @@
 #    By: marde-vr <marde-vr@42angouleme.fr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/04 08:03:00 by tomoron           #+#    #+#              #
-#    Updated: 2024/11/27 17:43:00 by tomoron          ###   ########.fr        #
+#    Updated: 2024/11/30 13:39:39 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 
-CC = gcc
+CC = cc
 
 SRCS =	ft_protected_atoi.c\
 		ft_convert.c\
