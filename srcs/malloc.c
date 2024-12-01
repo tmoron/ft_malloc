@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:19:59 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/01 03:05:08 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/01 19:21:27 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,21 @@ t_alloc	*get_suitable_addr_in_bloc(t_mem_bloc *bloc, size_t size)
 	size_t	space_left;
 	size_t	free_space;
 
-	tmp = bloc->first; //alloc when first alloc has been removed
+	tmp = bloc->first;
 	space_left = bloc->space_left;
+	if((t_ul)bloc->first - (t_ul)(bloc + 1) >= size + sizeof(t_alloc))
+	{
+		tmp = bloc->first;
+		bloc->first = reserve_addr((void *)(bloc + 1), size, 0, bloc) - 1;
+		bloc->first->next = tmp;
+		return(bloc->first + 1);
+	}
 	while (tmp->next)
 	{
 		free_space = ((t_ul)tmp->next - (t_ul)tmp) - (tmp->size + sizeof(t_alloc));
 		if (free_space >= size + sizeof(t_alloc))
 			return (reserve_addr(
-					(void *)((char *)tmp->next + tmp->size + sizeof(t_alloc)),
+					(void *)((char *)tmp + tmp->size + sizeof(t_alloc)),
 				size, tmp, bloc));
 		space_left -= free_space;
 		tmp = tmp->next;

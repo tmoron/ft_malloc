@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 18:46:07 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/01 03:16:19 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/01 18:47:12 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int free_prealloc(t_alloc *alloc, t_mem_bloc **main_bloc, size_t size)
 	t_mem_bloc *bloc;
 	t_alloc *prev;
 
+	prev = 0;
 	bloc = get_alloc_bloc(alloc, *main_bloc, size);
 	if(!bloc)
 		return(0);
