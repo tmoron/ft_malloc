@@ -6,15 +6,15 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 12:19:34 by tomoron           #+#    #+#             */
-/*   Updated: 2024/11/30 15:50:14 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/01 03:05:08 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/malloc.h"
 
-void put_ulnbr_base(unsigned long nbr, char *base)
+void put_ulnbr_base(t_ul nbr, char *base)
 {
-	unsigned long base_len;	
+	t_ul base_len;	
 
 	base_len = ft_strlen(base);
 	if(nbr >= base_len)
@@ -35,9 +35,9 @@ size_t show_allocs(t_alloc *alloc)
 	{
 		nb_bytes += alloc->size;
 		write(1, "0x", 2);
-		put_ulnbr_base((unsigned long)alloc + sizeof(t_alloc), "0123456789ABCDEF");
+		put_ulnbr_base((t_ul)alloc + sizeof(t_alloc), "0123456789ABCDEF");
 		write(1, " - 0x", 5);
-		put_ulnbr_base((unsigned long)alloc +sizeof(t_alloc) + alloc->size, "0123456789ABCDEF");
+		put_ulnbr_base((t_ul)alloc +sizeof(t_alloc) + alloc->size, "0123456789ABCDEF");
 		write(1, " : ", 3);
 		put_ulnbr_base(alloc->size, "0123456789");
 		write(1, " bytes\n", 7);
@@ -55,9 +55,9 @@ size_t show_pre_allocated(char *type, t_mem_bloc *bloc)
 	{
 		write(1, type, ft_strlen(type));
 		write(1, " : 0x", 5);
-		put_ulnbr_base((unsigned long)bloc, "0123456789ABCDEF");
+		put_ulnbr_base((t_ul)bloc, "0123456789ABCDEF");
 		write(1, "\n", 1);
-		nb_bytes += show_allocs((t_alloc *)(bloc + 1));
+		nb_bytes += show_allocs(bloc->first);
 		bloc = bloc->next;
 	}
 	return(nb_bytes);
@@ -65,25 +65,25 @@ size_t show_pre_allocated(char *type, t_mem_bloc *bloc)
 
 size_t show_large()
 {
-	t_mem_bloc *bloc;
+	t_alloc *alloc;
 	size_t total_size;
 
-	bloc = g_allocs.large;
+	alloc = g_allocs.large;
 	total_size = 0;
-	while(bloc)	
+	while(alloc)	
 	{
 		write(1, "LARGE : 0x", 10);
-		put_ulnbr_base((unsigned long)bloc, "0123456789ABCDEF");
+		put_ulnbr_base((t_ul)alloc, "0123456789ABCDEF");
 		write(1,"\n", 1);
 		write(1, "0x", 2);
-		put_ulnbr_base((unsigned long)(bloc + 1), "0123456789ABCDEF");
+		put_ulnbr_base((t_ul)(alloc + 1), "0123456789ABCDEF");
 		write(1, " - 0x", 5);
-		put_ulnbr_base((unsigned long)(bloc + 1) + bloc->space_left, "0123456789ABCDEF");
+		put_ulnbr_base((t_ul)(alloc + 1) + alloc->size, "0123456789ABCDEF");
 		write(1, " : ", 3);
-		put_ulnbr_base(bloc->space_left, "0123456789");
+		put_ulnbr_base(alloc->size, "0123456789");
 		write(1, " bytes\n", 7);
-		total_size += bloc->space_left;
-		bloc = bloc->next;
+		total_size += alloc->size;
+		alloc = alloc->next;
 	}
 	return(total_size);
 }

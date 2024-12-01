@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:38:01 by tomoron           #+#    #+#             */
-/*   Updated: 2024/11/30 13:53:11 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/01 03:08:41 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,23 @@ typedef struct s_mem_bloc
 {
 	size_t				space_left; //8
 	struct s_mem_bloc	*next; //8
-}	t_mem_bloc; //size 16
+	t_alloc				*first; //8
+	char				padding[8];
+}	t_mem_bloc; //size 32
 
 typedef struct s_allocations
 {
 	t_mem_bloc	*tiny;
 	t_mem_bloc	*small;
-	t_mem_bloc	*large;
+	t_alloc	*large;
 }	t_allocations;
+
+typedef unsigned long t_ul;
 
 extern t_allocations	g_allocs;
 
 void	*ft_malloc(size_t size);
 void	show_alloc_mem();
+void	ft_free(void *ptr);
 
 #endif

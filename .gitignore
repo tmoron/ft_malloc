@@ -1,6 +1,5 @@
 .objs
 libft_malloc*.so
-libft/libft.a
-libft/*.o
-libft/ft_printf/*.o
-
+*.o
+*.a
+a.out

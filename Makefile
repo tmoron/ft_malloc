@@ -6,7 +6,7 @@
 #    By: tomoron <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 00:35:01 by tomoron           #+#    #+#              #
-#    Updated: 2024/11/30 18:07:44 by tomoron          ###   ########.fr        #
+#    Updated: 2024/12/01 03:02:40 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ NAME := libft_malloc_$(HOSTTYPE).so
 CC = cc
 
 SRCS_NAMES =	malloc.c \
-				show_alloc_mem.c
+				show_alloc_mem.c\
+				free.c 
 
 SRCS_DIR = srcs
 
@@ -33,7 +34,7 @@ LFT = libft/libft.a
 
 LFT_DIR = libft/
 
-all: libft_malloc.so
+all: exec #libft_malloc.so
 
 exec: $(OBJS_DIR) $(OBJS) $(LFT)
 	$(CC) -o a.out $(FLAGS) main.c $(OBJS) $(LFT) 
