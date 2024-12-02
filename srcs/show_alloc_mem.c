@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 12:19:34 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/01 03:05:08 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/02 15:24:45 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,19 @@ size_t show_allocs(t_alloc *alloc)
 	return(nb_bytes);
 }
 
-size_t show_pre_allocated(char *type, t_mem_bloc *bloc)
+size_t show_pre_allocated(char *type, t_mem_chunk *chunk)
 {
 	size_t nb_bytes;
 
 	nb_bytes = 0;
-	while(bloc)
+	while(chunk)
 	{
 		write(1, type, ft_strlen(type));
 		write(1, " : 0x", 5);
-		put_ulnbr_base((t_ul)bloc, "0123456789ABCDEF");
+		put_ulnbr_base((t_ul)chunk, "0123456789ABCDEF");
 		write(1, "\n", 1);
-		nb_bytes += show_allocs(bloc->first);
-		bloc = bloc->next;
+		nb_bytes += show_allocs(chunk->first);
+		chunk = chunk->next;
 	}
 	return(nb_bytes);
 }
@@ -98,5 +98,5 @@ void show_alloc_mem()
 	total += show_large();
 	write(1, "Total : ", 8);
 	put_ulnbr_base(total, "0123456789");
-	write(1, " bytes\n", 6);
+	write(1, " bytes\n", 7);
 }

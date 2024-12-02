@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:19:59 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/01 19:21:27 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/02 19:54:00 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,28 +19,28 @@ t_allocations	g_allocs;
 
 void	*get_memory(size_t size, int no_write)
 {
-	t_mem_bloc	*bloc;
+	t_mem_chunk	*chunk;
 
-	bloc = mmap(0, size, PROT_WRITE | PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE,
+	chunk = mmap(0, size, PROT_WRITE | PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE,
 			-1, 0);
-	if (bloc == MAP_FAILED)
+	if (chunk == MAP_FAILED)
 		return (0);
 	if(no_write)
-		return(bloc);
-	bloc->space_left = size - sizeof(t_mem_bloc);
-	bloc->next = 0;
-	return (bloc);
+		return(chunk);
+	chunk->space_left = size - sizeof(t_mem_chunk);
+	chunk->next = 0;
+	return (chunk);
 }
 
 t_alloc	*reserve_addr(t_alloc *addr, size_t size, t_alloc *prev,
-		t_mem_bloc *bloc)
+		t_mem_chunk *chunk)
 {
 	t_alloc	*tmp;
 
 	if ((t_ul)addr % 16)
 		addr = (t_alloc *)((char *)addr + (16 - ((t_ul)addr % 16)));
 	addr->size = size;
-	bloc->space_left -= (size + sizeof(t_alloc));
+	chunk->space_left -= (size + sizeof(t_alloc));
 	if (prev)
 	{
 		tmp = prev->next;
@@ -52,20 +52,20 @@ t_alloc	*reserve_addr(t_alloc *addr, size_t size, t_alloc *prev,
 	return (addr + 1);
 }
 
-t_alloc	*get_suitable_addr_in_bloc(t_mem_bloc *bloc, size_t size)
+t_alloc	*get_suitable_addr_in_chunk(t_mem_chunk *chunk, size_t size)
 {
 	t_alloc	*tmp;
 	size_t	space_left;
 	size_t	free_space;
 
-	tmp = bloc->first;
-	space_left = bloc->space_left;
-	if((t_ul)bloc->first - (t_ul)(bloc + 1) >= size + sizeof(t_alloc))
+	tmp = chunk->first;
+	space_left = chunk->space_left;
+	if((t_ul)chunk->first - (t_ul)(chunk + 1) >= size + sizeof(t_alloc))
 	{
-		tmp = bloc->first;
-		bloc->first = reserve_addr((void *)(bloc + 1), size, 0, bloc) - 1;
-		bloc->first->next = tmp;
-		return(bloc->first + 1);
+		tmp = chunk->first;
+		chunk->first = reserve_addr((void *)(chunk + 1), size, 0, chunk) - 1;
+		chunk->first->next = tmp;
+		return(chunk->first + 1);
 	}
 	while (tmp->next)
 	{
@@ -73,64 +73,64 @@ t_alloc	*get_suitable_addr_in_bloc(t_mem_bloc *bloc, size_t size)
 		if (free_space >= size + sizeof(t_alloc))
 			return (reserve_addr(
 					(void *)((char *)tmp + tmp->size + sizeof(t_alloc)),
-				size, tmp, bloc));
+				size, tmp, chunk));
 		space_left -= free_space;
 		tmp = tmp->next;
 	}
 	if (space_left >= size + sizeof(t_alloc))
 		return (reserve_addr(
 				(t_alloc *)((char *)tmp + tmp->size + sizeof(t_alloc)),
-			size, tmp, bloc));
+			size, tmp, chunk));
 	return (0);
 }
 
-t_mem_bloc	*create_new_bloc(int is_small, t_mem_bloc **bloc, t_mem_bloc *prev)
+t_mem_chunk	*create_new_chunk(int is_small, t_mem_chunk **chunk, t_mem_chunk *prev)
 {
-	t_mem_bloc	*new;
+	t_mem_chunk	*new;
 	size_t		mmap_size;
 
 	if (is_small)
-		mmap_size = SMALL_BLOC_SIZE;
+		mmap_size = SMALL_CHUNK_SIZE;
 	else
-		mmap_size = TINY_BLOC_SIZE;
+		mmap_size = TINY_CHUNK_SIZE;
 	new = get_memory(mmap_size, 0);
 	if (!new)
 		return (0);
 	new->first = (t_alloc *)(new + 1);
 	if (prev)
 		prev->next = new;
-	if (!*bloc)
-		*bloc = new;
+	if (!*chunk)
+		*chunk = new;
 	return (new);
 }
 
-void	*pre_allocated(size_t size, t_mem_bloc **bloc, int is_small)
+void	*pre_allocated(size_t size, t_mem_chunk **chunk, int is_small)
 {
-	t_mem_bloc	*tmp;
-	t_mem_bloc	*prev;
+	t_mem_chunk	*tmp;
+	t_mem_chunk	*prev;
 	t_alloc		*res;
 
-	tmp = *bloc;
-	prev = *bloc;
+	tmp = *chunk;
+	prev = *chunk;
 	res = 0;
 	while (tmp)
 	{
 		if (tmp->space_left >= size)
 		{
-			res = get_suitable_addr_in_bloc(tmp, size);
+			res = get_suitable_addr_in_chunk(tmp, size);
 			if (res)
 				return (res);
 		}
 		prev = tmp;
 		tmp = tmp->next;
 	}
-	tmp = create_new_bloc(is_small, bloc, prev);
+	tmp = create_new_chunk(is_small, chunk, prev);
 	if (!tmp)
 		return (0);
-	return (reserve_addr((void *)tmp + sizeof(t_mem_bloc), size, 0, tmp));
+	return (reserve_addr((void *)tmp + sizeof(t_mem_chunk), size, 0, tmp));
 }
 
-void	*ft_malloc(size_t size)
+void	*malloc(size_t size)
 {
 	t_alloc	*new;
 

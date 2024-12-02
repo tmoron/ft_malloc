@@ -6,14 +6,20 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 18:46:07 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/01 18:47:12 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/02 19:54:00 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/malloc.h"
 
-t_mem_bloc *get_alloc_bloc(t_alloc *alloc, t_mem_bloc *first, size_t size)
+t_mem_chunk *get_alloc_chunk(t_alloc *alloc, t_mem_chunk *first,int is_small)
 {
+	size_t size;
+
+	if(is_small)
+		size = SMALL_CHUNK_SIZE;
+	else
+		size = TINY_CHUNK_SIZE;
 	while(first)
 	{
 		if((t_ul)alloc >= (t_ul)first && ((t_ul)alloc - (t_ul)(first + 1)) <= size)
@@ -27,6 +33,7 @@ int	get_prev_alloc(t_alloc **alloc, t_alloc **res, t_alloc *cur)
 {
 	t_alloc *prev;
 
+	*res = 0;
 	if(cur == *alloc)
 		return(1);
 	prev = 0;
@@ -49,27 +56,32 @@ int	get_prev_alloc(t_alloc **alloc, t_alloc **res, t_alloc *cur)
 	return(0);
 }
 
-int free_prealloc(t_alloc *alloc, t_mem_bloc **main_bloc, size_t size)
+int free_prealloc(t_alloc *alloc, t_mem_chunk **main_chunk, int is_small)
 {
-	t_mem_bloc *bloc;
+	t_mem_chunk *chunk;
 	t_alloc *prev;
+	size_t size;
 
 	prev = 0;
-	bloc = get_alloc_bloc(alloc, *main_bloc, size);
-	if(!bloc)
+	chunk = get_alloc_chunk(alloc, *main_chunk, is_small);
+	if(!chunk)
 		return(0);
-	if(!get_prev_alloc(&alloc, &prev, bloc->first))
+	if(!get_prev_alloc(&alloc, &prev, chunk->first))
 		return(1);
-	bloc->space_left -= alloc->size + sizeof(t_alloc);
-	if(bloc->first == alloc)
-		bloc->first = alloc->next;
+	chunk->space_left -= alloc->size + sizeof(t_alloc);
+	if(chunk->first == alloc)
+		chunk->first = alloc->next;
 	else if(prev)
 		prev->next = alloc->next;
-	if(!bloc->first)
+	if(!chunk->first)
 	{
-		if(*main_bloc == bloc)
-			*main_bloc = bloc->next;
-		munmap(bloc, size);
+		if(*main_chunk == chunk)
+			*main_chunk = chunk->next;
+		if(is_small)
+			size = SMALL_CHUNK_SIZE;
+		else
+			size = TINY_CHUNK_SIZE;
+		munmap(chunk, size);
 	}
 	return(1);
 }
@@ -87,14 +99,16 @@ void free_large(t_alloc *alloc)
 	munmap(alloc, alloc->size + sizeof(t_alloc));
 }
 
-void ft_free(void *ptr)
+void free(void *ptr)
 {
 	t_alloc *alloc;
 
-	alloc = (t_alloc *)ptr - 1;
-	if(free_prealloc(alloc, &g_allocs.tiny, TINY_BLOC_SIZE)) 
+	if(!ptr)
 		return ;
-	if(free_prealloc(alloc, &g_allocs.small, SMALL_BLOC_SIZE)) 
+	alloc = (t_alloc *)ptr - 1;
+	if(free_prealloc(alloc, &g_allocs.tiny, 0)) 
+		return ;
+	if(free_prealloc(alloc, &g_allocs.small, 1)) 
 		return ;
 	free_large(alloc);
 }

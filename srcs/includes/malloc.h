@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:38:01 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/01 03:08:41 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/02 20:18:33 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@
 
 # define PAGE_SIZE sysconf(_SC_PAGESIZE)
 
-# define TINY_BLOC_SIZE (PAGE_SIZE * 4)
-# define SMALL_BLOC_SIZE 524288
 
 # define TINY_MALLOC 1024
 # define SMALL_MALLOC 4096
+
+# define TINY_CHUNK_SIZE (((16 + TINY_MALLOC) * 100) + 32)
+# define SMALL_CHUNK_SIZE 524288
 
 typedef struct s_alloc
 {
@@ -32,18 +33,18 @@ typedef struct s_alloc
 	struct s_alloc	*next; //8
 }	t_alloc; //size 16
 
-typedef struct s_mem_bloc
+typedef struct s_mem_chunk
 {
 	size_t				space_left; //8
-	struct s_mem_bloc	*next; //8
+	struct s_mem_chunk	*next; //8
 	t_alloc				*first; //8
 	char				padding[8];
-}	t_mem_bloc; //size 32
+}	t_mem_chunk; //size 32
 
 typedef struct s_allocations
 {
-	t_mem_bloc	*tiny;
-	t_mem_bloc	*small;
+	t_mem_chunk	*tiny;
+	t_mem_chunk	*small;
 	t_alloc	*large;
 }	t_allocations;
 
@@ -51,8 +52,9 @@ typedef unsigned long t_ul;
 
 extern t_allocations	g_allocs;
 
-void	*ft_malloc(size_t size);
+void	*malloc(size_t size);
 void	show_alloc_mem();
-void	ft_free(void *ptr);
+void	free(void *ptr);
+void	*realloc(void *ptr, size_t size);
 
 #endif
