@@ -6,7 +6,7 @@
 #    By: tomoron <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 00:35:01 by tomoron           #+#    #+#              #
-#    Updated: 2024/11/27 17:45:42 by tomoron          ###   ########.fr        #
+#    Updated: 2024/12/03 15:26:54 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,7 @@ all: $(NAME)
 
 
 $(NAME): ft_printf $(OBJS)
-	make --no-print-directory -C ./ft_printf
+	$(MAKE) --no-print-directory -C ./ft_printf
 	cp ./ft_printf/libftprintf.a $(NAME) 
 	ar rcs $(NAME) $(OBJS)
 
@@ -86,7 +86,7 @@ bonus: $(OBJS) $(OBJS_BONUS)
 
 clean:
 	rm -f $(OBJS) $(OBJS_BONUS)
-	make --no-print-directory -C ./ft_printf fclean
+	$(MAKE) --no-print-directory -C ./ft_printf fclean
 
 fclean: clean
 	rm -f $(NAME)

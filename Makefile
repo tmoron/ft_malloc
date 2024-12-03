@@ -1,12 +1,11 @@
-# **************************************************************************** #
-#                                                                              #
+# **************************************************************************** # #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: tomoron <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 00:35:01 by tomoron           #+#    #+#              #
-#    Updated: 2024/12/01 03:02:40 by tomoron          ###   ########.fr        #
+#    Updated: 2024/12/03 15:25:19 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +16,11 @@ NAME := libft_malloc_$(HOSTTYPE).so
 CC = cc
 
 SRCS_NAMES =	malloc.c \
+				malloc_utils.c\
 				show_alloc_mem.c\
-				free.c 
+				free.c\
+				realloc.c\
+				utils.c
 
 SRCS_DIR = srcs
 
@@ -34,7 +36,7 @@ LFT = libft/libft.a
 
 LFT_DIR = libft/
 
-all: exec #libft_malloc.so
+all: libft_malloc.so
 
 exec: $(OBJS_DIR) $(OBJS) $(LFT)
 	$(CC) -o a.out $(FLAGS) main.c $(OBJS) $(LFT) 
@@ -43,7 +45,7 @@ libft_malloc.so: $(NAME)
 	ln -sf $(NAME) libft_malloc.so
 
 $(LFT):
-	$(MAKE) -C $(LFT_DIR)
+	make -j$(shell nproc) -C $(LFT_DIR)
 
 $(NAME): $(OBJS_DIR) $(OBJS) $(LFT)
 	$(CC) -shared -o $(NAME) $(OBJS) $(LFT)
