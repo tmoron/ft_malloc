@@ -3,14 +3,8 @@
 
 int main(void)
 {
-	int i;
-	
-	i = 0;
-	while(i < 110)
-	{
-		malloc(256);
-		i++;
-	}
-	show_alloc_mem();
+	void *ptr;
 
+	ptr = malloc(1203);
+	free(ptr);
 }

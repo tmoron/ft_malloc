@@ -6,14 +6,14 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:41:22 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/03 18:57:50 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/04 17:22:37 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/malloc.h"
 
 t_mem_chunk	*get_alloc_chunk(t_alloc *alloc, t_mem_chunk *first, size_t size);
-int			get_prev_alloc(t_alloc **alloc, t_alloc **res, t_alloc *cur);
+int			get_prev_alloc(t_alloc **alloc, t_alloc **res, t_alloc *cur, char *fnc);
 
 static void	*realloc_recreate(t_alloc *alloc, size_t size)
 {
@@ -35,7 +35,7 @@ static void	*realloc_prealloc(t_alloc *alloc, t_mem_chunk *chunk, \
 	chunk = get_alloc_chunk(alloc, chunk, is_small);
 	if (!chunk)
 		return (0);
-	if (!get_prev_alloc(&alloc, &prev, chunk->first))
+	if (!get_prev_alloc(&alloc, &prev, chunk->first, "realloc"))
 		return (0);
 	if (alloc->size >= size)
 	{
@@ -56,7 +56,7 @@ static void	*realloc_large(t_alloc *alloc, size_t size)
 {
 	t_alloc	*prev;
 
-	if (!get_prev_alloc(&alloc, &prev, g_allocs.large))
+	if (!get_prev_alloc(&alloc, &prev, g_allocs.large, "realloc"))
 		return (0);
 	return (realloc_recreate(alloc, size));
 }

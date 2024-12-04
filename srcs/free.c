@@ -6,11 +6,18 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 18:46:07 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/03 18:59:13 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/04 18:23:00 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/malloc.h"
+
+void invalid_pointer(char *fnc)
+{
+	(void)fnc;
+	write(2, fnc, ft_strlen(fnc));
+	write(2, "(): invalid pointer\n", 21);
+}
 
 t_mem_chunk	*get_alloc_chunk(t_alloc *alloc, t_mem_chunk *first, int is_small)
 {
@@ -30,7 +37,7 @@ t_mem_chunk	*get_alloc_chunk(t_alloc *alloc, t_mem_chunk *first, int is_small)
 	return (0);
 }
 
-int	get_prev_alloc(t_alloc **alloc, t_alloc **res, t_alloc *cur)
+int	get_prev_alloc(t_alloc **alloc, t_alloc **res, t_alloc *cur, char *fnc)
 {
 	t_alloc	*prev;
 
@@ -45,7 +52,7 @@ int	get_prev_alloc(t_alloc **alloc, t_alloc **res, t_alloc *cur)
 			*res = cur;
 			return (1);
 		}
-		if (cur->next > *alloc && cur <= *alloc && ((t_ul)alloc - \
+		if ((cur->next > *alloc || cur->next == 0) && cur <= *alloc && ((t_ul)*alloc - \
 				(t_ul)cur) <= cur->size)
 		{
 			*alloc = cur;
@@ -55,6 +62,7 @@ int	get_prev_alloc(t_alloc **alloc, t_alloc **res, t_alloc *cur)
 		prev = cur;
 		cur = cur->next;
 	}
+	invalid_pointer(fnc);
 	return (0);
 }
 
@@ -68,7 +76,7 @@ static int	free_prealloc(t_alloc *alloc, t_mem_chunk **main_chunk, \
 	chunk = get_alloc_chunk(alloc, *main_chunk, is_small);
 	if (!chunk)
 		return (0);
-	if (!get_prev_alloc(&alloc, &prev, chunk->first))
+	if (!get_prev_alloc(&alloc, &prev, chunk->first, "free"))
 		return (1);
 	chunk->space_left -= alloc->size + sizeof(t_alloc);
 	if (chunk->first == alloc)
@@ -92,7 +100,7 @@ static void	free_large(t_alloc *alloc)
 {
 	t_alloc	*prev;
 
-	if (!get_prev_alloc(&alloc, &prev, g_allocs.large))
+	if (!get_prev_alloc(&alloc, &prev, g_allocs.large, "free"))
 		return ;
 	if (alloc == g_allocs.large)
 		g_allocs.large = alloc->next;
