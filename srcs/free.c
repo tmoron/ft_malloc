@@ -6,18 +6,13 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 18:46:07 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/04 18:23:00 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/04 18:52:39 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/malloc.h"
 
-void invalid_pointer(char *fnc)
-{
-	(void)fnc;
-	write(2, fnc, ft_strlen(fnc));
-	write(2, "(): invalid pointer\n", 21);
-}
+void	invalid_pointer(char *fnc);
 
 t_mem_chunk	*get_alloc_chunk(t_alloc *alloc, t_mem_chunk *first, int is_small)
 {
@@ -52,8 +47,8 @@ int	get_prev_alloc(t_alloc **alloc, t_alloc **res, t_alloc *cur, char *fnc)
 			*res = cur;
 			return (1);
 		}
-		if ((cur->next > *alloc || cur->next == 0) && cur <= *alloc && ((t_ul)*alloc - \
-				(t_ul)cur) <= cur->size)
+		if ((cur->next > *alloc || cur->next == 0) && cur <= *alloc && \
+				((t_ul)(*alloc) - (t_ul)cur) <= cur->size)
 		{
 			*alloc = cur;
 			*res = prev;

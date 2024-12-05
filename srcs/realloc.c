@@ -6,14 +6,15 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:41:22 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/04 17:22:37 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/04 18:50:45 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/malloc.h"
 
 t_mem_chunk	*get_alloc_chunk(t_alloc *alloc, t_mem_chunk *first, size_t size);
-int			get_prev_alloc(t_alloc **alloc, t_alloc **res, t_alloc *cur, char *fnc);
+int			get_prev_alloc(t_alloc **alloc, t_alloc **res, t_alloc *cur, \
+		char *fnc);
 
 static void	*realloc_recreate(t_alloc *alloc, size_t size)
 {
