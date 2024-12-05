@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 12:19:34 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/03 18:50:25 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/05 17:05:48 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,11 @@ void	show_alloc_mem(void)
 	size_t	total;
 
 	total = 0;
+	pthread_mutex_lock(&g_mallock);
 	total += show_pre_allocated("TINY", g_allocs.tiny);
 	total += show_pre_allocated("SMALL", g_allocs.small);
 	total += show_large();
+	pthread_mutex_unlock(&g_mallock);
 	write(1, "Total : ", 8);
 	put_ulnbr_base(total, "0123456789");
 	write(1, " bytes\n", 7);

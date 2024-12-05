@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 18:46:07 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/04 18:52:39 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/05 17:01:32 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,12 @@ void	free(void *ptr)
 	if (!ptr)
 		return ;
 	alloc = (t_alloc *)ptr - 1;
+	pthread_mutex_lock(&g_mallock);
 	if (free_prealloc(alloc, &g_allocs.tiny, 0))
-		return ;
-	if (free_prealloc(alloc, &g_allocs.small, 1))
-		return ;
-	free_large(alloc);
+		pthread_mutex_unlock(&g_mallock);
+	else if (free_prealloc(alloc, &g_allocs.small, 1))
+		pthread_mutex_unlock(&g_mallock);
+	else
+		free_large(alloc);
+	pthread_mutex_unlock(&g_mallock);
 }

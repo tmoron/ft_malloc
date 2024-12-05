@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:38:01 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/03 15:21:41 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/05 16:39:23 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stddef.h>
 # include <sys/mman.h>
 # include <unistd.h>
+# include <pthread.h>
 # include "libft.h"
 
 # define PAGE_SIZE sysconf(_SC_PAGESIZE)
@@ -50,6 +51,7 @@ typedef struct s_allocations
 typedef unsigned long	t_ul;
 
 extern t_allocations	g_allocs;
+extern pthread_mutex_t	g_mallock;
 
 size_t	align(size_t nb, size_t align_nb);
 

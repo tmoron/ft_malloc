@@ -6,16 +6,14 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:19:59 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/03 19:01:33 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/05 17:01:08 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/malloc.h"
-#include <stdio.h>
-#include <errno.h>
-#include <string.h>
 
 t_allocations	g_allocs;
+pthread_mutex_t	g_mallock = PTHREAD_MUTEX_INITIALIZER;
 
 t_alloc		*get_suitable_addr_in_chunk(t_mem_chunk *chunk, size_t size);
 t_mem_chunk	*create_new_chunk(int is_small, t_mem_chunk **chunk, \
@@ -84,17 +82,24 @@ static void	*pre_allocated(size_t size, t_mem_chunk **chunk, int is_small)
 
 void	*malloc(size_t size)
 {
-	t_alloc	*new;
+	t_alloc	*res;
 
+	pthread_mutex_lock(&g_mallock);
 	if (size <= TINY_MALLOC)
-		return (pre_allocated(size, &(g_allocs.tiny), 0));
+		res = pre_allocated(size, &(g_allocs.tiny), 0);
 	else if (size <= SMALL_MALLOC)
-		return (pre_allocated(size, &(g_allocs.small), 1));
-	new = get_memory(size + sizeof(t_alloc), 1);
-	if (!new)
-		return (0);
-	new->size = size;
-	new->next = g_allocs.large;
-	g_allocs.large = new;
-	return ((char *)new + sizeof(t_alloc));
+		res = pre_allocated(size, &(g_allocs.small), 1);
+	else
+	{
+		res = get_memory(size + sizeof(t_alloc), 1);
+		if (res)
+		{
+			res->size = size;
+			res->next = g_allocs.large;
+			g_allocs.large = res;
+			res++;
+		}
+	}
+	pthread_mutex_unlock(&g_mallock);
+	return (res);
 }
