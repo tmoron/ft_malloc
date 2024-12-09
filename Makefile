@@ -20,7 +20,8 @@ SRCS_NAMES =	malloc.c \
 				show_alloc_mem.c\
 				free.c\
 				realloc.c\
-				utils.c
+				utils.c\
+				env_debug.c
 
 SRCS_DIR = srcs
 

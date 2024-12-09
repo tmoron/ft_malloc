@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:38:01 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/05 16:39:23 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/09 17:53:13 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <sys/mman.h>
 # include <unistd.h>
 # include <pthread.h>
+# include <stdint.h>
+# include <fcntl.h>
 # include "libft.h"
 
 # define PAGE_SIZE sysconf(_SC_PAGESIZE)
@@ -46,7 +48,17 @@ typedef struct s_allocations
 	t_mem_chunk	*tiny;
 	t_mem_chunk	*small;
 	t_alloc		*large;
+
+	short		log_level;
+	int			fd;
 }	t_allocations;
+
+typedef struct t_settings
+{
+	uint8_t debug_level:2;
+	uint8_t show_leaks:1;
+	uint8_t initialized:1;
+}	t_settings; //size 1
 
 typedef unsigned long	t_ul;
 
@@ -55,9 +67,12 @@ extern pthread_mutex_t	g_mallock;
 
 size_t	align(size_t nb, size_t align_nb);
 
-void	*malloc(size_t size);
-void	show_alloc_mem(void);
-void	free(void *ptr);
-void	*realloc(void *ptr, size_t size);
+void		*malloc(size_t size);
+t_settings	*get_settings();
+void		show_alloc_mem(void);
+void		free(void *ptr);
+void		*realloc(void *ptr, size_t size);
+void		log_str(char *str, int level, int print_level, int nl);
+void		log_ul(unsigned long nb, int level, int print_level, int nl);
 
 #endif

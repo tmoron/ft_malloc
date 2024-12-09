@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 18:46:07 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/05 17:01:32 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/09 19:16:14 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	get_prev_alloc(t_alloc **alloc, t_alloc **res, t_alloc *cur, char *fnc)
 		if ((cur->next > *alloc || cur->next == 0) && cur <= *alloc && \
 				((t_ul)(*alloc) - (t_ul)cur) <= cur->size)
 		{
+			log_str("invalid pointer but adress is inside of an \
+allocation", 2, 1, 1);
 			*alloc = cur;
 			*res = prev;
 			return (1);
@@ -57,6 +59,7 @@ int	get_prev_alloc(t_alloc **alloc, t_alloc **res, t_alloc *cur, char *fnc)
 		prev = cur;
 		cur = cur->next;
 	}
+	log_str("invalid pointer inside of a chunk", 2, 1, 1);
 	invalid_pointer(fnc);
 	return (0);
 }
@@ -71,6 +74,7 @@ static int	free_prealloc(t_alloc *alloc, t_mem_chunk **main_chunk, \
 	chunk = get_alloc_chunk(alloc, *main_chunk, is_small);
 	if (!chunk)
 		return (0);
+	log_str("free pointer chunk found", 3 ,1 ,1);
 	if (!get_prev_alloc(&alloc, &prev, chunk->first, "free"))
 		return (1);
 	chunk->space_left -= alloc->size + sizeof(t_alloc);
@@ -96,26 +100,33 @@ static void	free_large(t_alloc *alloc)
 	t_alloc	*prev;
 
 	if (!get_prev_alloc(&alloc, &prev, g_allocs.large, "free"))
+	{
+		log_str("unknown pointer given", 1, 1, 1);
 		return ;
+	}
 	if (alloc == g_allocs.large)
 		g_allocs.large = alloc->next;
 	else if (prev)
 		prev->next = alloc->next;
+	log_str("munmap called with size ", 3, 1, 0);
+	log_ul(alloc->size + sizeof(t_alloc), 3, 0, 1);
 	munmap(alloc, alloc->size + sizeof(t_alloc));
+	log_str("free sucessfull", 3, 1, 1);
 }
 
 void	free(void *ptr)
 {
 	t_alloc	*alloc;
 
+	log_str("free function called", 3, 1, 1);
 	if (!ptr)
 		return ;
 	alloc = (t_alloc *)ptr - 1;
 	pthread_mutex_lock(&g_mallock);
 	if (free_prealloc(alloc, &g_allocs.tiny, 0))
-		pthread_mutex_unlock(&g_mallock);
+		log_str("free successful", 3, 1, 1);
 	else if (free_prealloc(alloc, &g_allocs.small, 1))
-		pthread_mutex_unlock(&g_mallock);
+		log_str("free successful", 3, 1, 1);
 	else
 		free_large(alloc);
 	pthread_mutex_unlock(&g_mallock);
