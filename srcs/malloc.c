@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 17:19:59 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/09 18:48:53 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/10 18:12:18 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ void	*get_memory(size_t size, int no_write)
 
 	chunk = mmap(0, size, PROT_WRITE | PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE,
 			-1, 0);
-	log_str("mmap called with size ",3, 1, 0);
+	log_str("mmap called with size ", 3, 1, 0);
 	log_ul(size, 3, 0, 1);
 	if (chunk == MAP_FAILED)
 	{
 		log_str("mmap call failed", 1, 1, 1);
 		return (0);
 	}
-	log_str("mmap call successful", 3, 1 ,1);
+	log_str("mmap call successful", 3, 1, 1);
 	if (no_write)
 		return (chunk);
 	chunk->space_left = size - sizeof(t_mem_chunk);
@@ -92,7 +92,7 @@ void	*malloc(size_t size)
 	t_alloc	*res;
 
 	pthread_mutex_lock(&g_mallock);
-	log_str("malloc called with size ",3, 1, 0);
+	log_str("malloc called with size ", 3, 1, 0);
 	log_ul(size, 3, 0, 1);
 	if (size <= TINY_MALLOC)
 		res = pre_allocated(size, &(g_allocs.tiny), 0);
@@ -108,7 +108,7 @@ void	*malloc(size_t size)
 			res++;
 		}
 	}
-	if(res)
+	if (res)
 		log_str("malloc call successful", 3, 1, 1);
 	else
 		log_str("malloc call failed", 1, 1, 1);

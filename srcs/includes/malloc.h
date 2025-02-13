@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:38:01 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/09 17:53:13 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/10 18:19:55 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ typedef struct s_allocations
 
 typedef struct t_settings
 {
-	uint8_t debug_level:2;
-	uint8_t show_leaks:1;
-	uint8_t initialized:1;
+	uint8_t	debug_level:2;
+	uint8_t	show_leaks:1;
+	uint8_t	initialized:1;
 }	t_settings; //size 1
 
 typedef unsigned long	t_ul;
@@ -65,10 +65,10 @@ typedef unsigned long	t_ul;
 extern t_allocations	g_allocs;
 extern pthread_mutex_t	g_mallock;
 
-size_t	align(size_t nb, size_t align_nb);
+size_t		align(size_t nb, size_t align_nb);
 
 void		*malloc(size_t size);
-t_settings	*get_settings();
+t_settings	*get_settings(void);
 void		show_alloc_mem(void);
 void		free(void *ptr);
 void		*realloc(void *ptr, size_t size);

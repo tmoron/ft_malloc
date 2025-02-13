@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:44:32 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/09 18:21:47 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/10 18:18:45 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_mem_chunk	*create_new_chunk(int is_small, t_mem_chunk **chunk, \
 	size_t		mmap_size;
 
 	log_str("no suitable address found in previously allocated chunks, \
-creating new chunk", 3 , 1 ,1);
+creating new chunk", 3, 1, 1);
 	if (is_small)
 		mmap_size = SMALL_CHUNK_SIZE;
 	else

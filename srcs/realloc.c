@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:41:22 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/09 20:07:24 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/10 18:14:56 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,12 @@ static void	*realloc_prealloc(t_alloc *alloc, t_mem_chunk *chunk, \
 		|| (size > SMALL_MALLOC && is_small == 1)
 		|| (t_ul)(alloc->next) - (t_ul)(alloc + 1) < size)
 	{
-		log_str("new realloc size doesn't fit in the current position, reallocating", 3, 1, 1);
+		log_str("new realloc size doesn't fit in the current position, \
+reallocating", 3, 1, 1);
 		return (realloc_recreate(alloc, size));
 	}
-	log_str("new realloc size fits in the current position, making it bigger",3, 1, 1);
+	log_str("new realloc size fits in the current position, making it \
+bigger", 3, 1, 1);
 	chunk->space_left -= size - alloc->size;
 	alloc->size = size;
 	return (alloc + 1);
@@ -68,7 +70,7 @@ static void	*realloc_large(t_alloc *alloc, size_t size)
 
 	if (!get_prev_alloc(&alloc, &prev, g_allocs.large, "realloc"))
 	{
-		log_str("unknown pointer given to realloc", 1, 1 ,1);
+		log_str("unknown pointer given to realloc", 1, 1, 1);
 		return (0);
 	}
 	return (realloc_recreate(alloc, size));
@@ -84,14 +86,14 @@ void	*realloc(void *ptr, size_t size)
 	alloc = (t_alloc *)ptr - 1;
 	pthread_mutex_lock(&g_mallock);
 	ptr = realloc_prealloc(alloc, g_allocs.tiny, 0, size);
-	if(!ptr)
+	if (!ptr)
 		ptr = realloc_prealloc(alloc, g_allocs.small, 1, size);
-	if(!ptr)
+	if (!ptr)
 		ptr = realloc_large(alloc, size);
-	if(ptr)
+	if (ptr)
 		log_str("realloc sucessful", 3, 1, 1);
 	else
 		log_str("realloc failed", 1, 1, 1);
 	pthread_mutex_unlock(&g_mallock);
-	return(ptr);
+	return (ptr);
 }

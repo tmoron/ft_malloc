@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 18:46:07 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/09 19:16:14 by tomoron          ###   ########.fr       */
+/*   Updated: 2024/12/10 19:13:55 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,23 +43,20 @@ int	get_prev_alloc(t_alloc **alloc, t_alloc **res, t_alloc *cur, char *fnc)
 	while (cur)
 	{
 		if (cur->next == *alloc)
-		{
 			*res = cur;
-			return (1);
-		}
 		if ((cur->next > *alloc || cur->next == 0) && cur <= *alloc && \
 				((t_ul)(*alloc) - (t_ul)cur) <= cur->size)
 		{
-			log_str("invalid pointer but adress is inside of an \
-allocation", 2, 1, 1);
+			log_str("invalid pointer but address is known", 2, 1, 1);
 			*alloc = cur;
 			*res = prev;
-			return (1);
 		}
+		if(*res)
+			return(1);
 		prev = cur;
 		cur = cur->next;
 	}
-	log_str("invalid pointer inside of a chunk", 2, 1, 1);
+	log_str("invalid pointer inside of a chunk", 3, 1, 1);
 	invalid_pointer(fnc);
 	return (0);
 }
@@ -74,7 +71,7 @@ static int	free_prealloc(t_alloc *alloc, t_mem_chunk **main_chunk, \
 	chunk = get_alloc_chunk(alloc, *main_chunk, is_small);
 	if (!chunk)
 		return (0);
-	log_str("free pointer chunk found", 3 ,1 ,1);
+	log_str("free pointer chunk found", 3, 1, 1);
 	if (!get_prev_alloc(&alloc, &prev, chunk->first, "free"))
 		return (1);
 	chunk->space_left -= alloc->size + sizeof(t_alloc);

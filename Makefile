@@ -21,7 +21,8 @@ SRCS_NAMES =	malloc.c \
 				free.c\
 				realloc.c\
 				utils.c\
-				env_debug.c
+				env_debug.c\
+				program_end.c
 
 SRCS_DIR = srcs
 
@@ -39,8 +40,9 @@ LFT_DIR = libft/
 
 all: libft_malloc.so
 
-exec: $(OBJS_DIR) $(OBJS) $(LFT)
-	$(CC) -o a.out $(FLAGS) main.c $(OBJS) $(LFT) 
+exec: $(OBJS_DIR) $(NAME) $(LFT)
+	$(CC) -o a.out $(FLAGS) main.c $(NAME) $(LFT) 
+	$(CC) -o a.out $(FLAGS) main.c -L. -lft_malloc $(LFT) -Wl,-rpath=.
 
 libft_malloc.so: $(NAME)
 	ln -sf $(NAME) libft_malloc.so
