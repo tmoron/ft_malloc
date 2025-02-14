@@ -6,7 +6,7 @@
 #    By: marde-vr <marde-vr@42angouleme.fr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/04 08:03:00 by tomoron           #+#    #+#              #
-#    Updated: 2024/11/30 13:39:39 by tomoron          ###   ########.fr        #
+#    Updated: 2025/02/14 17:48:08 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ SRCS =	ft_protected_atoi.c\
 		
 OBJS = $(SRCS:.c=.o)
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -Wno-unused-result
 
 $(NAME): $(OBJS)
 	ar rcs $(NAME) $(OBJS)

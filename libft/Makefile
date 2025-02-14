@@ -6,7 +6,7 @@
 #    By: tomoron <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/28 00:35:01 by tomoron           #+#    #+#              #
-#    Updated: 2024/12/10 18:31:35 by tomoron          ###   ########.fr        #
+#    Updated: 2025/02/14 17:47:44 by tomoron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,7 +69,7 @@ SRCS_BONUS =	ft_lstnew.c\
 OBJS = $(SRCS:.c=.o)
 OBJS_BONUS = $(SRCS_BONUS:.c=.o)
 
-FLAGS = -Wall -Wextra -Werror -g -fPIC
+FLAGS = -Wall -Wextra -Werror -g -Wno-unused-result -fPIC
 
 all: $(NAME)
 

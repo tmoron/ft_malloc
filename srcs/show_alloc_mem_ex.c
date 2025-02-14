@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   show_alloc_mem_ex.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/14 17:19:23 by tomoron           #+#    #+#             */
-/*   Updated: 2025/02/14 17:19:59 by tomoron          ###   ########.fr       */
+/*   Created: 2025/02/14 17:26:41 by tomoron           #+#    #+#             */
+/*   Updated: 2025/02/14 17:48:53 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "srcs/includes/malloc.h"
-#include <stdio.h>
+#include "includes/malloc.h"
 
-int	main(void)
+void show_alloc_mem_ex(void)
 {
-	void	*ptr;
+	size_t	total;
 
-	printf("%zu\n", SMALL_CHUNK_SIZE);
-	ptr = malloc(1203);
-	show_alloc_mem();
-	ptr = realloc(ptr, 12045);
-	show_alloc_mem();
-	free(ptr);
-	show_alloc_mem();
+	total = 0;
+	pthread_mutex_lock(&g_mallock);
+	total += show_pre_allocated("TINY", g_allocs.tiny, 1);
+	total += show_pre_allocated("SMALL", g_allocs.small, 1);
+	total += show_large(1);
+	pthread_mutex_unlock(&g_mallock);
+	write(1, "Total : ", 8);
+	put_ulnbr_base(total, "0123456789");
+	write(1, " bytes\n", 7);
 }

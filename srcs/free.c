@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 18:46:07 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/10 19:13:55 by tomoron          ###   ########.fr       */
+/*   Updated: 2025/02/14 17:20:17 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ int	get_prev_alloc(t_alloc **alloc, t_alloc **res, t_alloc *cur, char *fnc)
 			*alloc = cur;
 			*res = prev;
 		}
-		if(*res)
-			return(1);
+		if (*res)
+			return (1);
 		prev = cur;
 		cur = cur->next;
 	}

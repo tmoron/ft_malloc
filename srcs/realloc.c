@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 14:41:22 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/10 18:14:56 by tomoron          ###   ########.fr       */
+/*   Updated: 2025/02/14 17:43:40 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	*realloc_recreate(t_alloc *alloc, size_t size)
 		size = alloc->size;
 	pthread_mutex_unlock(&g_mallock);
 	ft_memcpy(new, alloc + 1, size);
-	free(alloc + 1);
+	free((void *)(alloc + 1));
 	pthread_mutex_lock(&g_mallock);
 	return (new);
 }

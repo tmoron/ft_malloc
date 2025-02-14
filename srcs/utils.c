@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:20:54 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/10 18:16:13 by tomoron          ###   ########.fr       */
+/*   Updated: 2025/02/14 17:45:17 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	log_fd(int closefd)
 		if (fd == -1)
 		{
 			ft_putnbr_fd(errno, 1);
-			write(2, "malloc(): can't open log file\n", 37);
+			write(2, "malloc(): can't open log file\n", 30);
 		}
 	}
 	return (fd);

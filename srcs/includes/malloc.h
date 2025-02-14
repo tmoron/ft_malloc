@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:38:01 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/10 18:19:55 by tomoron          ###   ########.fr       */
+/*   Updated: 2025/02/14 18:16:06 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,10 @@ extern t_allocations	g_allocs;
 extern pthread_mutex_t	g_mallock;
 
 size_t		align(size_t nb, size_t align_nb);
+size_t		show_pre_allocated(char *type, t_mem_chunk *chunk, int dump);
+size_t		show_large(int dump);
+void		put_ulnbr_base(t_ul nbr, char *base);
+void		hex_dump(char *addr, size_t nb);
 
 void		*malloc(size_t size);
 t_settings	*get_settings(void);

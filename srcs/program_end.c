@@ -6,12 +6,11 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 17:11:27 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/10 18:13:37 by tomoron          ###   ########.fr       */
+/*   Updated: 2025/02/14 17:24:02 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/malloc.h"
-#include <stdio.h>
 
 void __attribute__((destructor))	malloc_end(void)
 {

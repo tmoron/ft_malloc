@@ -6,7 +6,7 @@
 /*   By: tomoron <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 16:55:48 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/09 17:25:45 by tomoron          ###   ########.fr       */
+/*   Updated: 2025/02/13 13:41:49 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_strjoin(char const *s1, char const *s2);
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 void	*ft_memchr(const void *s, int c, size_t n);
-void	ft_lstadd_front(t_list **lst, t_list *new);
+void	ft_lstadd_front(t_list **lst, t_list *new_l);
 char	**ft_split(char const *str, char charset);
-void	ft_lstadd_back(t_list **lst, t_list *new);
+void	ft_lstadd_back(t_list **lst, t_list *new_l);
 char	**ft_split_set(char *str, char *charset);
 void	ft_putulnbr_fd(unsigned long n, int fd);
 int		ft_str_is_only_char(char *str, char c);

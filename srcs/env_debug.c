@@ -6,12 +6,11 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 19:16:40 by tomoron           #+#    #+#             */
-/*   Updated: 2024/12/10 18:18:03 by tomoron          ###   ########.fr       */
+/*   Updated: 2025/02/14 17:24:10 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/malloc.h"
-#include <stdio.h>
 
 t_settings	*get_settings(void)
 {

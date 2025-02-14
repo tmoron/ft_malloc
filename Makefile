@@ -32,7 +32,7 @@ SRCS = $(addprefix $(SRCS_DIR)/, $(SRCS_NAMES))
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS_NAMES:.c=.o))
 
-FLAGS = -Wall -Wextra -Werror -g
+FLAGS = -Wall -Wextra -Werror -Wno-unused-result -Wno-free-nonheap-object -g
 
 LFT = libft/libft.a
 
@@ -41,7 +41,7 @@ LFT_DIR = libft/
 all: libft_malloc.so
 
 exec: $(OBJS_DIR) $(NAME) $(LFT)
-	$(CC) -o a.out $(FLAGS) main.c $(NAME) $(LFT) 
+#	$(CC) -o a.out $(FLAGS) main.c $(NAME) $(LFT) 
 	$(CC) -o a.out $(FLAGS) main.c -L. -lft_malloc $(LFT) -Wl,-rpath=.
 
 libft_malloc.so: $(NAME)
