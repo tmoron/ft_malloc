@@ -6,13 +6,13 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:26:41 by tomoron           #+#    #+#             */
-/*   Updated: 2025/02/14 17:48:53 by tomoron          ###   ########.fr       */
+/*   Updated: 2025/02/15 16:23:04 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/malloc.h"
 
-void show_alloc_mem_ex(void)
+void	show_alloc_mem_ex(void)
 {
 	size_t	total;
 

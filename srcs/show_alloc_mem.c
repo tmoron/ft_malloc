@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 12:19:34 by tomoron           #+#    #+#             */
-/*   Updated: 2025/02/14 18:18:48 by tomoron          ###   ########.fr       */
+/*   Updated: 2025/02/15 16:26:09 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static size_t	show_allocs(t_alloc *alloc, int dump)
 		write(1, " : ", 3);
 		put_ulnbr_base(alloc->size, "0123456789");
 		write(1, " bytes\n", 7);
-		if(dump)
+		if (dump)
 			hex_dump((void *)(alloc + 1), alloc->size);
 		alloc = alloc->next;
 	}
@@ -86,7 +86,7 @@ size_t	show_large(int dump)
 		put_ulnbr_base(alloc->size, "0123456789");
 		write(1, " bytes\n", 7);
 		total_size += alloc->size;
-		if(dump)
+		if (dump)
 			hex_dump((void *)(alloc + 1), alloc->size);
 		alloc = alloc->next;
 	}
