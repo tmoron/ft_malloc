@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:38:01 by tomoron           #+#    #+#             */
-/*   Updated: 2025/02/14 18:16:06 by tomoron          ###   ########.fr       */
+/*   Updated: 2025/02/15 15:00:21 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,14 @@ size_t		show_pre_allocated(char *type, t_mem_chunk *chunk, int dump);
 size_t		show_large(int dump);
 void		put_ulnbr_base(t_ul nbr, char *base);
 void		hex_dump(char *addr, size_t nb);
+void		log_str(char *str, int level, int print_level, int nl);
+void		log_ul(unsigned long nb, int level, int print_level, int nl);
 
 void		*malloc(size_t size);
 t_settings	*get_settings(void);
 void		show_alloc_mem(void);
+void		show_alloc_mem_ex(void);
 void		free(void *ptr);
 void		*realloc(void *ptr, size_t size);
-void		log_str(char *str, int level, int print_level, int nl);
-void		log_ul(unsigned long nb, int level, int print_level, int nl);
 
 #endif
