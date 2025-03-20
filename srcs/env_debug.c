@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 19:16:40 by tomoron           #+#    #+#             */
-/*   Updated: 2025/02/14 17:24:10 by tomoron          ###   ########.fr       */
+/*   Updated: 2025/03/20 16:58:18 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ t_settings	*get_settings(void)
 	{
 		if (getenv("MALLOC_SHOW_LEAKS"))
 			settings.show_leaks = 1;
+		if (getenv("MALLOC_NO_UNMAP"))
+			settings.no_unmap = 1;
 		str = getenv("MALLOC_DEBUG_LEVEL");
 		if (!str || !ft_strcmp(str, "NONE"))
 			settings.debug_level = 0;

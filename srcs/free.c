@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 18:46:07 by tomoron           #+#    #+#             */
-/*   Updated: 2025/02/14 17:20:17 by tomoron          ###   ########.fr       */
+/*   Updated: 2025/03/20 17:00:04 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,24 @@ int	get_prev_alloc(t_alloc **alloc, t_alloc **res, t_alloc *cur, char *fnc)
 	return (0);
 }
 
+static void free_chunk(size_t size, t_mem_chunk *chunk, t_mem_chunk **main_chunk)
+{
+	t_mem_chunk *prev;
+
+	prev = *main_chunk;
+	if(*main_chunk == chunk)
+		prev = 0;
+	while(prev && prev->next != chunk)
+		prev = prev->next;
+	if (!prev && !chunk->next)
+		return;
+	if(prev)
+		prev->next = chunk->next;
+	else
+		*main_chunk = chunk->next;
+	munmap(chunk, size);
+}
+
 static int	free_prealloc(t_alloc *alloc, t_mem_chunk **main_chunk, \
 	int is_small)
 {
@@ -79,15 +97,13 @@ static int	free_prealloc(t_alloc *alloc, t_mem_chunk **main_chunk, \
 		chunk->first = alloc->next;
 	else if (prev)
 		prev->next = alloc->next;
-	if (!chunk->first)
+	if (!chunk->first && !get_settings()->no_unmap)
 	{
-		if (*main_chunk == chunk)
-			*main_chunk = chunk->next;
 		if (is_small)
 			size = SMALL_CHUNK_SIZE;
 		else
 			size = TINY_CHUNK_SIZE;
-		munmap(chunk, size);
+		free_chunk(size, chunk, main_chunk);
 	}
 	return (1);
 }

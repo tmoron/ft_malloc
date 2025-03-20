@@ -9,7 +9,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-HOSTTYPE := $(shell uname -m)_$(shell uname -s)
+HOSTTYPE ?= $(shell uname -m)_$(shell uname -s)
 
 NAME := libft_malloc_$(HOSTTYPE).so
 
@@ -47,13 +47,13 @@ exec: $(OBJS_DIR) $(NAME) $(LFT)
 	$(CC) -o a.out $(FLAGS) main.c -L. -lft_malloc $(LFT) -Wl,-rpath=.
 
 libft_malloc.so: $(NAME)
-	ln -sf $(NAME) libft_malloc.so
+	ln -sf "$(NAME)" libft_malloc.so
 
 $(LFT):
 	make -j$(shell nproc) -C $(LFT_DIR)
 
 $(NAME): $(OBJS_DIR) $(OBJS) $(LFT)
-	$(CC) -shared -o $(NAME) $(OBJS) $(LFT)
+	$(CC) -shared -o "$(NAME)" $(OBJS) $(LFT)
 
 $(OBJS_DIR):
 	mkdir -p $(OBJS_DIR)
@@ -66,7 +66,7 @@ clean:
 	make -C $(LFT_DIR) fclean
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f "$(NAME)"
 	rm -f libft_malloc.so
 
 re: fclean all

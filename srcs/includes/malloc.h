@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:38:01 by tomoron           #+#    #+#             */
-/*   Updated: 2025/02/15 15:00:21 by tomoron          ###   ########.fr       */
+/*   Updated: 2025/03/20 16:58:10 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct t_settings
 {
 	uint8_t	debug_level:2;
 	uint8_t	show_leaks:1;
+	uint8_t	no_unmap:1;
 	uint8_t	initialized:1;
 }	t_settings; //size 1
 
