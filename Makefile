@@ -42,7 +42,7 @@ LFT_DIR = libft/
 
 all: libft_malloc.so
 
-tests: $(OBJS_DIR) $(NAME) $(LFT) tests.c
+tests: $(OBJS_DIR) libft_malloc.so $(LFT) tests.c
 	$(CC) -o tests $(FLAGS) tests.c -L. -lft_malloc $(LFT) -Wl,-rpath=.
 
 libft_malloc.so: $(NAME)
@@ -67,6 +67,7 @@ clean:
 fclean: clean
 	rm -f "$(NAME)"
 	rm -f libft_malloc.so
+	rm -f tests
 
 re: fclean all
 
