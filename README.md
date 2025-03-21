@@ -8,9 +8,9 @@ to compile the project, go at the root of the repository and do the command `mak
 ## usage
 you can have two usage of the lib. you can either override the normal malloc function in a already compiled program or you can compile your program with the lib , giving you acess to other functions like `show_alloc_mem` or `show_alloc_mem_ex`. in the examples `<folder>` represent the folder containing the compilation results
 
-to override the functions in an already compile program you need to do this command :
+to override the functions in an already compiled program you need to do this command. every command executed after this will use my malloc function:
  ```
-  export LD_LIBRARY_PATH=. LD_PRELOAD=libft_malloc.so
+export LD_LIBRARY_PATH=. LD_PRELOAD=libft_malloc.so
  ```
 
 to compile a program with the lib, you have to add these parameters at the end of your compilation command (for gcc or clang):
