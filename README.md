@@ -13,6 +13,12 @@ to override the functions in an already compile program you need to do this comm
   export LD_LIBRARY_PATH=. LD_PRELOAD=libft_malloc.so
  ```
 
+to compile a program with the lib, you have to add these parameters at the end of your compilation command (for gcc or clang):
+
+```
+-L<folder> -lft_malloc
+```
+
 ## tests
 a test program is available at the root. to execute it do the command `make test` and then execute the program that have been compiled with `./tests`
 

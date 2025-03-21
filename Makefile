@@ -42,9 +42,8 @@ LFT_DIR = libft/
 
 all: libft_malloc.so
 
-exec: $(OBJS_DIR) $(NAME) $(LFT)
-#	$(CC) -o a.out $(FLAGS) main.c $(NAME) $(LFT) 
-	$(CC) -o a.out $(FLAGS) tests.c -L. -lft_malloc $(LFT) -Wl,-rpath=.
+tests: $(OBJS_DIR) $(NAME) $(LFT) tests.c
+	$(CC) -o tests $(FLAGS) tests.c -L. -lft_malloc $(LFT) -Wl,-rpath=.
 
 libft_malloc.so: $(NAME)
 	ln -sf "$(NAME)" libft_malloc.so

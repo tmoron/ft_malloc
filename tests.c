@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 17:58:16 by tomoron           #+#    #+#             */
-/*   Updated: 2025/03/20 17:58:17 by tomoron          ###   ########.fr       */
+/*   Updated: 2025/03/21 13:13:33 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void show_alloc_ex_test()
 {
 	char *data;
 
+	printf("\n\n\nSHOW_ALLOC_EX TEST:\n");
 	data = malloc(1020);
 	memset(data, 0, 1020);
 	strcpy(data, "0123456789abcdef");
@@ -82,8 +83,8 @@ int main(void)
 	realloc_test();
 	show_alloc_ex_test();
 
-	#ifdef LEAK_TEST
-		printf("leak_test set, allocating memory before end of program");		
+	#if 1
+		printf("allocating memory before end of program\n");		
 		malloc(10);
 		malloc(50);
 		malloc(8000);
