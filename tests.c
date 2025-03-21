@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 17:58:16 by tomoron           #+#    #+#             */
-/*   Updated: 2025/03/21 13:13:33 by tomoron          ###   ########.fr       */
+/*   Updated: 2025/03/21 13:35:34 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ void malloc_free_test()
 
 	printf("MALLOC TEST (pointers shouldn't be null):\n");
 	ptr[0] = malloc(42);
-	printf("tiny malloc : %p\n", ptr);
+	printf("tiny malloc : %p\n", ptr[0]);
 	ptr[1] = malloc(1024);
-	printf("small malloc : %p\n", ptr);
+	printf("small malloc : %p\n", ptr[1]);
 	ptr[2] = malloc(16384 * 1024);
-	printf("large malloc : %p\n", ptr);
+	printf("large malloc : %p\n", ptr[2]);
 
 	printf("\n\n\nFREE TEST (1024 bloc is from printf):\n");
 	printf("before : \n");
@@ -84,7 +84,7 @@ int main(void)
 	show_alloc_ex_test();
 
 	#if 1
-		printf("allocating memory before end of program\n");		
+		printf("allocating memory before end of program\n");
 		malloc(10);
 		malloc(50);
 		malloc(8000);
