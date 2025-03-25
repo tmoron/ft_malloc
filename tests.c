@@ -6,7 +6,7 @@
 /*   By: tomoron <tomoron@student.42angouleme.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 17:58:16 by tomoron           #+#    #+#             */
-/*   Updated: 2025/03/21 13:35:34 by tomoron          ###   ########.fr       */
+/*   Updated: 2025/03/25 14:20:14 by tomoron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,28 @@ void show_alloc_ex_test()
 	strcpy(data + 16, "potato");
 	data[584] = 'a';
 	show_alloc_mem_ex();
+	free(data);
+}
+
+void defrag_test()
+{
+	void *ptrs[3];
+
+	printf("\n\n\nDEFRAG_TEST: making two alloc of size 20\n");
+	ptrs[0] = malloc(20);
+	ptrs[1] = malloc(20);
+	show_alloc_mem();
+	printf("\nfree allocs\n");
+	free(ptrs[0]);
+	free(ptrs[1]);
+	printf("allocating a new bloc of size 40, address should be the same as first bloc\n");
+	ptrs[2] = malloc(40);
+	show_alloc_mem();
+	if(ptrs[2] == ptrs[0])
+		printf("\nallocated bloc has the same address\n");
+	else
+		printf("\nERROR : allocated bloc doesn't have the same address\n");
+	free(ptrs[2]);
 }
 
 int main(void)
@@ -82,8 +104,9 @@ int main(void)
 	malloc_free_test();
 	realloc_test();
 	show_alloc_ex_test();
+	defrag_test();
 
-	#if 1
+	#if 0
 		printf("allocating memory before end of program\n");
 		malloc(10);
 		malloc(50);
